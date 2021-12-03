@@ -239,6 +239,7 @@ def score_2afc_dataset(data_loader, func, name=''):
     d0s = np.array(d0s)
     d1s = np.array(d1s)
     gts = np.array(gts)
+
     scores = (d0s<d1s)*(1.-gts) + (d1s<d0s)*gts + (d1s==d0s)*.5
 
     return(np.mean(scores), dict(d0s=d0s,d1s=d1s,gts=gts,scores=scores))

@@ -243,9 +243,11 @@ class CLIP(nn.Module):
         self.model, self.pp = clip.load("ViT-B/32")
         self.model.cuda().eval()
     
-    def forward(self, in0, in1):
-        pp_in0 = self.pp(in0)
-        pp_in1 = self.pp(in1)
+    def forward(self, in0, in1, retPerLayer=None):
+        pp_in0 = torch.nn.functional.interpolate(in0, size=[224,224]).cuda()
+        pp_in1 = torch.nn.functional.interpolate(in1, size=[224,224]).cuda()
+        #pp_in0 = self.pp(in0)
+        #pp_in1 = self.pp(in1)
         feature_in0 = self.model.encode_image(pp_in0).float()
         feature_in1 = self.model.encode_image(pp_in1).float()
 
