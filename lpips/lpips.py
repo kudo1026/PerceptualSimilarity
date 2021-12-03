@@ -237,8 +237,9 @@ class DSSIM(FakeNet):
 
 
 class CLIP(nn.Module):
-    
+
     def __init__(self):
+        super(CLIP, self).__init__()
         self.model, self.pp = clip.load("ViT-B/32")
         self.model.cuda().eval()
     
