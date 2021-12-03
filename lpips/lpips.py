@@ -8,6 +8,8 @@ from torch.autograd import Variable
 import numpy as np
 from . import pretrained_networks as pn
 import torch.nn
+import clip
+from PIL import Image
 
 import lpips
 
@@ -232,6 +234,21 @@ class DSSIM(FakeNet):
         if(self.use_gpu):
             ret_var = ret_var.cuda()
         return ret_var
+
+
+class CLIP(nn.Module):
+    
+    def __init__(self):
+        self.model, self.pp = clip.load("ViT-B/32")
+        self.model.cuda().eval()
+    
+    def forward(self, in0, in1):
+        pp_in0 = self.pp(in0)
+        pp_in1 = self.pp(in1)
+        feature_in0 = self.model.encode_image(pp_in0).float()
+        feature_in1 = self.model.encode_image(pp_in1).float()
+
+        return torch.mean(feature_in0 - feature_in1)
 
 def print_network(net):
     num_params = 0

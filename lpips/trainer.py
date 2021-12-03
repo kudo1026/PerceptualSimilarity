@@ -57,6 +57,9 @@ class Trainer():
         elif(self.model in ['DSSIM','dssim','SSIM','ssim']):
             self.net = lpips.DSSIM(use_gpu=use_gpu,colorspace=colorspace)
             self.model_name = 'SSIM'
+        elif(self.model in ['clip']):
+            self.net = lpips.CLIP()
+            self.model_name = 'CLIP'
         else:
             raise ValueError("Model [%s] not recognized." % self.model)
 
